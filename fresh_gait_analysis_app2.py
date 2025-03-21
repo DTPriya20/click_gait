@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 import joblib
@@ -8,6 +9,7 @@ from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 from sklearn.ensemble import RandomForestClassifier
 from collections import defaultdict
+
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -158,6 +160,9 @@ def reset_session():
     session["start_time"] = time.time()  # Reset session start time
     return jsonify({"message": "Session data reset successfully!"})
 
+
+
 if __name__ == "__main__":
-    logging.info("🌐 Starting Flask API... Access it via http://127.0.0.1:5000")
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 10000))  # Use the port Render provides
+    logging.info(f"🌐 Starting Flask API... Access it via http://0.0.0.0:{port}")
+    app.run(host="0.0.0.0", port=port)
